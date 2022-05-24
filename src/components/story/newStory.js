@@ -51,7 +51,6 @@ export const NewStory = (props) => {
   };
   return (
     <Container>
-      <label>{count}</label>
       <Box component="form" onSubmit={onSubmitHandler}>
         <TextField
           margin="normal"
