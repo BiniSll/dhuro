@@ -15,7 +15,6 @@ export const Home = () => {
 
 	return (
 		<div>
-			{/* <NewStory/> */}
 			{stories.map((story) => (
 				<StoryItem
 					title={story.title}
