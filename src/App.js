@@ -1,4 +1,4 @@
-import { div, useState } from 'react';
+import { useState } from 'react';
 import './App.css';
 import { Home } from './components/home/home';
 import SignIn from './components/login/signin';

@@ -12,6 +12,10 @@ export const StoryItem = (props) => {
 				minHeight: 350,
 				marginY: 5,
 				marginX: [0, 4, 7, 15],
+				border: 7,
+				borderColor: 'rgba(0, 0, 0, 0.2)',
+				borderRadius: 10,
+				overflow: 'hidden',
 			}}
 		>
 			<CardActionArea>
@@ -19,28 +23,55 @@ export const StoryItem = (props) => {
 					component='img'
 					sx={{
 						height: [200, 300, 400, 500],
-						borderWidth: 2,
-						borderColor: '#000000',
+						borderColor: 'rgba(0, 0, 0, 0.2)',
+						// borderBottomRightRadius: 10,
+						// borderBottomLeftRadius: 10,
 					}}
 					image={props.image}
 					alt='green iguana'
 				/>
 				<CardContent>
-					<Typography gutterBottom variant='h5' component='div'>
+					<Typography
+						gutterBottom
+						variant='h5'
+						component='div'
+						textAlign={'center'}
+					>
 						{props.title}
 					</Typography>
-					<Typography variant='body2' color='text.secondary'>
+					<Typography
+						variant='body2'
+						color='text.secondary'
+						textAlign={'center'}
+					>
 						{props.description}
 						<hr />
-						Shperndaresi: <span>{props.username}</span>
+						Shperndaresi: {props.username}
 					</Typography>
-					<Typography variant='caption'>
-						Telefoni: <span>{props.phone}</span>
+					<Typography
+						variant='body2'
+						color='text.secondary'
+						textAlign={'center'}
+					>
+						Telefoni: {props.phone}
 					</Typography>
 				</CardContent>
 			</CardActionArea>
-			<CardActions>
-				<Button size='small' color='primary'>
+			<CardActions textAlign='center'>
+				<Button
+					style={{
+						backgroundColor: '#213123',
+						color: 'white',
+						marginBottom: 10,
+					}}
+					color='inherit'
+					variant='contained'
+					sx={{
+						flexGrow: 1,
+						borderRadius: 10,
+						marginX: 1,
+					}}
+				>
 					Shiko me shume
 				</Button>
 			</CardActions>

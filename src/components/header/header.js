@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccessibilityNewRoundedIcon from '@mui/icons-material/AccessibilityNewRounded';
+import CardMedia from '@mui/material/CardMedia';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 
 export const Header = (props) => {
@@ -18,6 +19,14 @@ export const Header = (props) => {
 				sx={{ borderRadius: 10 }}
 			>
 				<Toolbar>
+					<CardMedia
+						component='img'
+						sx={{
+							width: [60, 80, 100, 120],
+						}}
+						image={require('../assets/dhurologo.png')}
+						alt='green iguana'
+					/>
 					<Button
 						href='/'
 						variant='contained'
