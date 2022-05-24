@@ -10,14 +10,14 @@ import { Route, Routes } from "react-router-dom";
 import { NewStory } from "./components/story/newStory";
 
 const App = () => {
-  const [IsLoggedIn, setIsLoggedIn] = useState(false);
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsLoggedIn(true);
-    } else {
-    }
-  }, []);
+	const [IsLoggedIn, setIsLoggedIn] = useState(false);
+	useEffect(() => {
+		const token = localStorage.getItem('token');
+		if (token) {
+			setIsLoggedIn(true);
+		} else {
+		}
+	}, []);
 
   return (
     <Container maxWidth='lg'>
