@@ -1,25 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import { Home } from "./components/home/home";
+import SignIn from "./components/login/signin";
+import SignUp from "./components/login/signup";
+import { StoryItem } from "./components/story/storyitem";
+import { Container } from "@mui/system";
+import { Header } from "./components/header/header";
+const App = () => {
+  const token = localStorage.getItem("token") != null ? true : false;
 
-function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <Header />
+      {/* {token? <SignIn />: <SignUp />} */}
+      <Home />
+    </Container>
   );
-}
+};
 
 export default App;
