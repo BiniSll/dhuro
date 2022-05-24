@@ -17,7 +17,7 @@ const App = () => {
   }, []);
 
   return (
-    <Container>
+    <Container maxWidth='lg'>
       <Header IsLoggedIn={IsLoggedIn} />
       {/* {token? <SignIn />: <SignUp />} */}
       <Home />
