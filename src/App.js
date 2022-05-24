@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { Home } from "./components/home/home";
 import SignIn from "./components/login/signin";
@@ -7,11 +7,18 @@ import { StoryItem } from "./components/story/storyitem";
 import { Container } from "@mui/system";
 import { Header } from "./components/header/header";
 const App = () => {
-  const token = localStorage.getItem("token") != null ? true : false;
+  const [IsLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+    }
+  }, []);
 
   return (
     <Container>
-      <Header />
+      <Header IsLoggedIn={IsLoggedIn} />
       {/* {token? <SignIn />: <SignUp />} */}
       <Home />
     </Container>
