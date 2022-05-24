@@ -1,8 +1,11 @@
 import { Box, Container } from "@mui/system";
+import {useSelector, useDispatch} from 'react-redux'
 import { TextField, Button } from "@mui/material";
 import React, { useState } from "react";
 
 export const NewStory = (props) => {
+  const count = useSelector((state) => state.counter.value)
+
   const [title, setTitle] = useState("");
   const [username, setUsername] = useState("");
   const [phone, setPhone] = useState("");
@@ -48,6 +51,7 @@ export const NewStory = (props) => {
   };
   return (
     <Container>
+      <label>{count}</label>
       <Box component="form" onSubmit={onSubmitHandler}>
         <TextField
           margin="normal"
