@@ -1,34 +1,53 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { Home } from "./components/home/home";
-import {SignIn} from "./components/login/signin";
-import {SignUp} from "./components/login/signup";
+import { SignIn } from "./components/login/signin";
+import { SignUp } from "./components/login/signup";
 import { StoryItem } from "./components/story/storyitem";
 import { Container } from "@mui/system";
 import { Header } from "./components/header/header";
 import { Route, Routes } from "react-router-dom";
+import {useSelector} from 'react-redux'
 import { NewStory } from "./components/story/newStory";
+import LinearProgress from '@mui/material/LinearProgress';
+import { Button } from "@mui/material";
 
 const App = () => {
-	const [IsLoggedIn, setIsLoggedIn] = useState(false);
-	useEffect(() => {
-		const token = localStorage.getItem('token');
-		if (token) {
-			setIsLoggedIn(true);
-		} else {
-		}
-	}, []);
+  const IsLoggedIn = useSelector((state)=> state.login.isLoggedIn);
+  const [IsLoading, setIsLoading] = useState(false);
+  
+  
+  const isLoggedInHandler = () => {
+    return (
+      <div>
+        <Header IsLoggedIn={IsLoggedIn} />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/storyitem" element={<StoryItem />} />
+          <Route path="/story/create" element={<NewStory />} />
+        </Routes>
+      </div>
+    );
+  };
 
-  return (
-    <Container maxWidth='lg'>
-      <Header IsLoggedIn={IsLoggedIn} />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/storyitem" element={<StoryItem />} />
-        <Route path="/story/create" element={<NewStory />} />
-      </Routes>
+  const isNotLoggedInHandler = () => {
+    return (
+      <div>
+        <Header IsLoggedIn={IsLoggedIn} />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/storyitem" element={<StoryItem />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Routes>
+      </div>
+    );
+  };
+  return IsLoading ? (
+    <LinearProgress />
+  ) : (
+    <Container maxWidth="lg">
+      {IsLoggedIn ? isLoggedInHandler() : isNotLoggedInHandler()}
     </Container>
   );
 };

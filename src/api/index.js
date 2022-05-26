@@ -6,8 +6,10 @@ let authToken = localStorage.getItem('token') ? JSON.parse(localStorage.getItem(
 
 const axiosIntance = axios.create({
     baseURL: baseUrl,
+    timeout: 5000,
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + authToken
     }
-});
+  });
+
+export default axiosIntance;

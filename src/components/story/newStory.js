@@ -2,6 +2,8 @@ import { Box, Container } from "@mui/system";
 import {useSelector, useDispatch} from 'react-redux'
 import { TextField, Button } from "@mui/material";
 import React, { useState } from "react";
+import {CardMedia} from "@mui/material";
+import { Input } from '@mui/material';
 
 export const NewStory = (props) => {
   const count = useSelector((state) => state.counter.value)
@@ -10,7 +12,7 @@ export const NewStory = (props) => {
   const [username, setUsername] = useState("");
   const [phone, setPhone] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState([]);
 
   const handleTitleInput = (e) => {
     setTitle(e.target.value);
@@ -24,8 +26,11 @@ export const NewStory = (props) => {
   const handleDescriptionInput = (e) => {
     setDescription(e.target.value);
   };
+  
   const handleImageInput = (e) => {
-    setImage(e.target.value);
+    e.preventDefault();
+    setImage(...image, e.target.files);
+    debugger;
   };
 
   const [story, setStory] = useState({
@@ -47,17 +52,26 @@ export const NewStory = (props) => {
     };
 
     setStory(newStory);
-    console.log("story: ", story);
   };
   return (
     <Container>
+      <CardMedia
+        component="img"
+        sx={{
+          marginTop: 8,
+          marginLeft: '43.5%',
+          width: [60, 80, 100, 120],
+        }}
+        image={require("../assets/dhurologo.png")}
+        alt="green iguana"
+      />
       <Box component="form" onSubmit={onSubmitHandler}>
         <TextField
           margin="normal"
           required
           fullWidth
           id="title"
-          label="Title"
+          label="Titulli"
           name="title"
           onChange={handleTitleInput}
           autoFocus
@@ -66,42 +80,13 @@ export const NewStory = (props) => {
           margin="normal"
           required
           fullWidth
-          id="username"
-          label="Username"
-          name="username"
-          onChange={handleUsernameInput}
-          autoFocus
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="phone"
-          label="Phone"
-          name="phone"
-          onChange={handlePhoneInput}
-          autoFocus
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
           id="description"
-          label="Description"
+          label="Përshkrimi"
           name="description"
           onChange={handleDescriptionInput}
           autoFocus
         />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="image"
-          label="Image"
-          name="image"
-          onChange={handleImageInput}
-          autoFocus
-        />
+        <input type="file" multiple onChange={handleImageInput} />
         <Button
           type="submit"
           fullWidth
