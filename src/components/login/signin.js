@@ -40,6 +40,7 @@ export function SignIn() {
     setUsernameOrEmail(data.get("email"));
     setPassword(data.get("password"));
     try {
+      setOnError(false);
       logInReq(dispatch, { usernameOrEmail, password }).then((response) => {
         debugger;
         if (response !== 200) {

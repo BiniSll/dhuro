@@ -11,3 +11,14 @@ export const logInReq = async(dispatch, requestData) => {
     return {title: error.response.status, description: error.response.statusText};
   }
 };
+
+export const signUpReq = async(dispatch, requestData) => {
+  try{
+    const responsePromise = await axiosIntance.post("/Home/signup", requestData);
+    dispatch(login(await responsePromise.data))
+    return responsePromise.status;
+  }
+  catch(error){
+    return {title: error.response.status, description: error.response.statusText};
+  }
+}
