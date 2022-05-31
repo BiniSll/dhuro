@@ -17,8 +17,6 @@ import "./header.scss";
 
 export const Header = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [anchorCattegories, setAnchorCategories] = useState(null);
-  const categoriesOpen = Boolean(anchorCattegories);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -41,13 +39,6 @@ export const Header = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const openCategoriesHandler = (event) => {
-    setAnchorCategories(event.currentTarget)
-  }
-  const categoriesCloseHandler = () => {
-    setAnchorCategories(null);
-  }
 
   return (
       <AppBar position="relative" color="transparent" sx={{ borderRadius: 10 }}>
@@ -131,13 +122,6 @@ export const Header = (props) => {
             </Button>
           )}
         </Toolbar>
-        <Button className="categories" sx={{width: '100%'}} onClick={openCategoriesHandler}>
-          Thos
-        </Button>
-        <Menu open={categoriesOpen} anchorEl={anchorCattegories} onClose={categoriesCloseHandler} sx={{width: '100%', flexDirection: 'column'}}>
-          <MenuItem sx={{width: '100%', textAlign:"center"}} >Hello</MenuItem>
-          <MenuItem sx={{width: '100%', textAlign:"center"}} >Hello</MenuItem>
-        </Menu>
       </AppBar>
   );
 };
