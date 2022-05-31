@@ -32,6 +32,7 @@ export const NewStory = (props) => {
   };
   const handleUsernameInput = (e) => {
     setUsername(e.target.value);
+    
   };
   const handlePhoneInput = (e) => {
     setPhone(e.target.value);
