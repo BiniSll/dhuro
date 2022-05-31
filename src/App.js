@@ -28,6 +28,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/storyitem" element={<StoryItem />} />
           <Route path="/story/create" element={<NewStory />} />
+          <Route path="*" element={<Home />} />
         </Routes>
       </div>
     );
@@ -43,6 +44,7 @@ const App = () => {
           <Route path="/storyitem" element={<StoryItem />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="*" element={<Home />} />
         </Routes>
       </div>
     );

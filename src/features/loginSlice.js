@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axiosIntance from "../api";
 
 export const loginSlice = createSlice({
   name: "login",
@@ -19,7 +18,10 @@ export const loginSlice = createSlice({
       state.user = action.payload.resUser;
       state.token = action.payload.access_token;
       state.isLoggedIn = true;
-      localStorage.setItem("token", JSON.stringify(action.payload.access_token));
+      localStorage.setItem(
+        "token",
+        JSON.stringify(action.payload.access_token)
+      );
     },
     logout: (state) => {
       localStorage.removeItem("token");
@@ -29,7 +31,6 @@ export const loginSlice = createSlice({
   },
 });
 
-
 export const { isLoggedIn, login, logout } = loginSlice.actions;
 
-export default loginSlice.reducer
+export default loginSlice.reducer;

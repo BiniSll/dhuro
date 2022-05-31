@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { onError } from '../../features/errorSlice';
+import "./modal.scss";
 
 const style = {
   position: 'absolute',
@@ -13,7 +14,8 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
+  border: '1px solid #ccc',
+  borderRadius: '4px',
   boxShadow: 24,
   p: 4,
 };
@@ -41,19 +43,20 @@ export const BasicModal = () => {
   return (
     <div>
       <Modal
+        className="modal"
         open={open}
         onClose={open}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Button className="btn-close-modal" sx={{position: "sticky", right: 0}} onClick={handleOnClose}>X</Button>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             {title}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {description}
           </Typography>
+          <Button className="btn-close-modal" sx={{position: "sticky", right: 0}} onClick={handleOnClose}>X</Button>
         </Box>
       </Modal>
     </div>

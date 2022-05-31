@@ -26,22 +26,22 @@ export function SignIn() {
   const dispatch = useDispatch();
   const nav = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+
+  //logindata
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(true);
+
+  const handleRememberMe = () => {
+    setRememberMe(!rememberMe);
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
     try {
-      await logInReq(dispatch, { usernameOrEmail, password }).then((res)=> {
-        if(res.status === 200){
-          setIsLoading(false);
-          // nav("/");
-        }
-        else{
-          setIsLoading(false);
-        }
-      });
+      await logInReq(nav, dispatch, { usernameOrEmail, password }, rememberMe);
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
     }
@@ -101,10 +101,12 @@ export function SignIn() {
                 autoComplete="current-password"
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
-              />
+                checked={rememberMe}
+                onChange={handleRememberMe}
+              /> */}
               <Button
                 type="submit"
                 fullWidth

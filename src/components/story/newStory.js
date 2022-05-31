@@ -1,18 +1,31 @@
 import { Box, Container } from "@mui/system";
-import {useSelector, useDispatch} from 'react-redux'
-import { TextField, Button } from "@mui/material";
-import React, { useState } from "react";
-import {CardMedia} from "@mui/material";
-import { Input } from '@mui/material';
+import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import {
+  CardMedia,
+  ImageList,
+  ImageListItem,
+  TextField,
+  Button,
+  Input,
+} from "@mui/material";
+import { Image } from "@mui/icons-material";
+import AddIcon from "@mui/icons-material/Add";
+import { InputAdornment } from "@mui/material";
+import "./newStory.scss";
+
+const imageMimeType = /image\/(png|jpg|jpeg)/i;
 
 export const NewStory = (props) => {
-  const count = useSelector((state) => state.counter.value)
-
   const [title, setTitle] = useState("");
   const [username, setUsername] = useState("");
   const [phone, setPhone] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState([]);
+
+  //
+  const [image, setImage] = useState(null);
+  const [images, setImages] = useState([]);
+  const [imagesToPreview, setImagesToPreview] = useState([]);
 
   const handleTitleInput = (e) => {
     setTitle(e.target.value);
@@ -26,11 +39,36 @@ export const NewStory = (props) => {
   const handleDescriptionInput = (e) => {
     setDescription(e.target.value);
   };
-  
+
+  useEffect(() => {
+    let fileReader,
+      isCancel = false;
+
+    if (image) {
+      fileReader = new FileReader();
+      fileReader.onload = (e) => {
+        const { result } = e.target;
+        if (result && !isCancel) {
+          setImagesToPreview((imagesToPreview) => [...imagesToPreview, result]);
+        }
+      };
+      fileReader.readAsDataURL(image);
+    }
+    return () => {
+      isCancel = true;
+      if (fileReader && fileReader.readyState === 1) {
+        fileReader.abort();
+      }
+    };
+  }, [image]);
+
   const handleImageInput = (e) => {
-    e.preventDefault();
-    setImage(...image, e.target.files);
-    debugger;
+    const file = e.target.files[0];
+    if (!file.type.match(imageMimeType)) {
+      alert("Image mime type is not valid");
+      return;
+    }
+    setImage(file);
   };
 
   const [story, setStory] = useState({
@@ -48,7 +86,7 @@ export const NewStory = (props) => {
       username,
       phone,
       description,
-      image,
+      images,
     };
 
     setStory(newStory);
@@ -59,7 +97,7 @@ export const NewStory = (props) => {
         component="img"
         sx={{
           marginTop: 8,
-          marginLeft: '43.5%',
+          marginLeft: "43.5%",
           width: [60, 80, 100, 120],
         }}
         image={require("../assets/dhurologo.png")}
@@ -86,7 +124,24 @@ export const NewStory = (props) => {
           onChange={handleDescriptionInput}
           autoFocus
         />
-        <input type="file" multiple onChange={handleImageInput} />
+        <label className="lblImage" for="image">
+          <AddIcon className="add-icon" />
+          <Input
+            type="file"
+            id="image"
+            accept=".png, .jpg, .jpeg"
+            onChange={handleImageInput}
+          />
+        </label>
+
+        <ImageList cols={2}>
+          {imagesToPreview.map((item) => (
+            <ImageListItem>
+              <img src={item} alt={item.name} loading="lazy" />
+            </ImageListItem>
+          ))}
+        </ImageList>
+
         <Button
           type="submit"
           fullWidth

@@ -1,0 +1,13 @@
+#image {
+  display: none;
+  font-size: 0px;
+}
+
+.lblImage {
+  &:hover {
+    .add-icon {
+      transform: scale(1.5);
+      transition: all 0.5s ease-in-out;
+    }
+  }
+}
