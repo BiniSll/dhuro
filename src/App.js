@@ -11,6 +11,7 @@ import {useSelector} from 'react-redux'
 import { NewStory } from "./components/story/newStory";
 import LinearProgress from '@mui/material/LinearProgress';
 import { Button } from "@mui/material";
+import { BasicModal } from "./components/modal/modal";
 
 const App = () => {
   const IsLoggedIn = useSelector((state)=> state.login.isLoggedIn);
@@ -20,7 +21,9 @@ const App = () => {
   const isLoggedInHandler = () => {
     return (
       <div>
+        <BasicModal/>
         <Header IsLoggedIn={IsLoggedIn} />
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/storyitem" element={<StoryItem />} />
@@ -33,6 +36,7 @@ const App = () => {
   const isNotLoggedInHandler = () => {
     return (
       <div>
+        <BasicModal/>
         <Header IsLoggedIn={IsLoggedIn} />
         <Routes>
           <Route path="/" element={<Home />} />

@@ -1,8 +1,10 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import { useDispatch, useSelector } from 'react-redux';
+import { onError } from '../../features/errorSlice';
 
 const style = {
   position: 'absolute',
@@ -16,13 +18,25 @@ const style = {
   p: 4,
 };
 
-export const BasicModal = (props) => {
-  const [open, setOpen] = React.useState(props.open);
+export const BasicModal = () => {
+  const dispatch = useDispatch();
+  const title = useSelector((state)=> state.error.title);
+  const description = useSelector((state)=> state.error.description);
 
+  const [open, setOpen] = useState(true);
 
   const handleOnClose = () => {
     setOpen(false);
+    dispatch(onError({ statusText: null, data: null }));
   };
+
+  useEffect(()=>{
+    if(title === null && description === null){
+      setOpen(false);
+    }else{
+      setOpen(true)
+    }
+  }, [title, description]);
 
   return (
     <div>
@@ -33,16 +47,12 @@ export const BasicModal = (props) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Button sx={{
-            position: 'static',
-            top: '0',
-            rigth: '0',
-          }} onClick={handleOnClose}>Close</Button>
+          <Button className="btn-close-modal" sx={{position: "sticky", right: 0}} onClick={handleOnClose}>X</Button>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            {props.title}
+            {title}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {props.description}
+            {description}
           </Typography>
         </Box>
       </Modal>

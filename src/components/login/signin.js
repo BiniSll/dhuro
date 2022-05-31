@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -19,55 +19,36 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logInReq } from "../../api/login";
 import { login } from "../../features/loginSlice";
+import { onError } from "../../features/errorSlice";
 const theme = createTheme();
 
 export function SignIn() {
   const dispatch = useDispatch();
   const nav = useNavigate();
-
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [onError, setOnError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    const data = new FormData(event.currentTarget);
-
-    setUsernameOrEmail(data.get("email"));
-    setPassword(data.get("password"));
     try {
-      setOnError(false);
-      logInReq(dispatch, { usernameOrEmail, password }).then((response) => {
-        debugger;
-        if (response !== 200) {
-          setTitle(response.title);
-          setDescription(response.description);
-          setOnError(true);
+      await logInReq(dispatch, { usernameOrEmail, password }).then((res)=> {
+        if(res.status === 200){
           setIsLoading(false);
-        } else {
-          setIsLoading(false);
-          //navigate to home page
-          nav("/");
+          // nav("/");
         }
-      })
-
-      
+        else{
+          setIsLoading(false);
+        }
+      });
     } catch (err) {
-      debugger;
       console.log(err);
     }
   };
 
   return (
     <ThemeProvider theme={theme}>
-      {onError?<BasicModal
-          title={title}
-          description={description}
-          open={onError}/>: null}
       {isLoading ? (
         <CircularProgress
           size={40}
