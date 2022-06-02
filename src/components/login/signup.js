@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,7 +14,10 @@ import { CircularProgress, InputLabel } from "@mui/material";
 
 //extension
 import { ValidateEmail } from "../../extensions/Validate";
-import { Label } from "@mui/icons-material";
+import { onError } from "../../redux/features/errorSlice";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {signUpReq} from "../../redux/actions/login";
 
 const theme = createTheme();
 
@@ -29,6 +32,10 @@ export function SignUp() {
   const [isEmailValid, setIsEmailValid] = useState("");
   const [isPasswordValid, setIsPasswordValid] = useState("");
   const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState("");
+  
+
+  const dispatch = useDispatch();
+  const nav = useNavigate();
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -48,18 +55,74 @@ export function SignUp() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handlePasswordChange = (event) => {
+    if(event.target.value.length >= 6)
+    {
+      setPassword(event.target.value);
+      setIsPasswordValid(null);
+    }
+    else{
+      setIsPasswordValid("Fjalekalimi duhet te jete me shume se 6 karaktere");
+    }
+    
+  };
+
+  const handleConfirmPasswordChange = (event) => {
+    if(event.target.value === password)
+    {
+      setConfirmPassword(event.target.value);
+      setIsConfirmPasswordValid(null);
+    }
+    else{
+      setIsConfirmPasswordValid("Fjalekalimet nuk perputhen");
+    }
+    
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    const data = new FormData(e.currentTarget);
+    const unFilledFields = [];
+
+    if(name === "")
+    {
+      unFilledFields.push("Emri, ");
+    }
+    
+    if(lastName === "")
+    {
+      unFilledFields.push("Mbiemri, ");
+    }
+
+    if(email === "")
+    {
+      unFilledFields.push("Email, ");
+    }
+
+    if(password === "")
+    {
+      unFilledFields.push("Fjalekalimi, ");
+    }
+
+    if(confirmPassword === "")
+    {
+      unFilledFields.push("Konfirmo fjalekalimin");
+    }
+
+    if(unFilledFields.length > 0)
+    {
+      setIsLoading(false);
+      dispatch(onError({statusText: "Te gjitha fushat duhët të plotesohen!", data: unFilledFields}));
+    }
 
     const user = {
       name,
-      lastName,
+      lastname,
       email,
       password,
       confirmPassword,
     };
+    await signUpReq(nav, dispatch, user);
 
     setIsLoading(false);
   };
@@ -105,8 +168,8 @@ export function SignUp() {
                     fullWidth
                     id="firstName"
                     label="Emri"
-                    onAbort={handleNameChange}
                     autoFocus
+                    onChange={handleNameChange}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -117,6 +180,8 @@ export function SignUp() {
                     label="Mbiemri"
                     name="lastName"
                     autoComplete="family-name"
+                    autoFocus 
+                    onChange={handleLastNameChange}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -133,6 +198,7 @@ export function SignUp() {
                     name="email"
                     autoComplete="email"
                     onChange={handleEmailChange}
+                    autoFocus 
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -148,6 +214,8 @@ export function SignUp() {
                     label="Fjalekalimi"
                     type="password"
                     id="password"
+                    onChange={handlePasswordChange}
+                    autoFocus 
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -161,8 +229,10 @@ export function SignUp() {
                     fullWidth
                     name="confirmPassword"
                     label="Konfirmo fjalekalimin"
-                    type="confirmPassword"
+                    type="password"
                     id="confirmPassword"
+                    onChange={handleConfirmPasswordChange}
+                    autoFocus
                   />
                 </Grid>
               </Grid>

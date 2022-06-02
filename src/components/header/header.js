@@ -6,7 +6,7 @@ import AccessibilityNewRoundedIcon from "@mui/icons-material/AccessibilityNewRou
 import CardMedia from "@mui/material/CardMedia";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { useDispatch } from "react-redux";
-import { logout } from "../../features/loginSlice";
+import { logout } from "../../redux/features/loginSlice";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Avatar from "@mui/material/Avatar";

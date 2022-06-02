@@ -28,9 +28,18 @@ export const loginSlice = createSlice({
       state.isLoggedIn = false;
       state.user = null;
     },
+    signUp: (state, action) => {
+      state.user = action.payload.resUser;
+      state.token = action.payload.access_token;
+      state.isLoggedIn = true;
+      localStorage.setItem(
+        "token",
+        JSON.stringify(action.payload.access_token)
+      );
+    },
   },
 });
 
-export const { isLoggedIn, login, logout } = loginSlice.actions;
+export const { isLoggedIn, login, logout, signUp } = loginSlice.actions;
 
 export default loginSlice.reducer;
