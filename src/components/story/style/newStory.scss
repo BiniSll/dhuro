@@ -4,6 +4,8 @@
 }
 
 .lblImage {
+  margin-top: 10px;
+  border: 1px solid #ccc;
   &:hover {
     .add-icon {
       transform: scale(1.5);

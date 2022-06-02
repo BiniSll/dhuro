@@ -15,7 +15,7 @@ const style = {
   width: 400,
   bgcolor: 'background.paper',
   border: '1px solid #ccc',
-  borderRadius: '4px',
+  borderRadius: '15px',
   boxShadow: 24,
   p: 4,
 };
@@ -56,7 +56,7 @@ export const BasicModal = () => {
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {description}
           </Typography>
-          <Button className="btn-close-modal" sx={{position: "sticky", right: 0}} onClick={handleOnClose}>X</Button>
+          <Button className="btn-close-modal" sx={{position: "sticky", right: 0, borderRadius: '15px'}} onClick={handleOnClose}>X</Button>
         </Box>
       </Modal>
     </div>

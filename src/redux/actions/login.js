@@ -1,6 +1,6 @@
-import axiosIntance from "./index";
-import { login } from "../features/loginSlice";
-import { onError } from "../features/errorSlice";
+import axiosIntance from "../../api/index";
+import { login } from "../../features/loginSlice";
+import { onError } from "../../features/errorSlice";
 
 export const logInReq = async (nav, dispatch, requestData) => {
   try {

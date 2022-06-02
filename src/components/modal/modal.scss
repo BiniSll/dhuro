@@ -1,10 +1,15 @@
 .modal {
   & .btn-close-modal {
     margin-top: 50px;
+    
     width: 100%;
     border: 1px solid #ccc;
     &:hover {
-      background-color: #ccc;
+      transition: all 0.4s ease-in-out;
+      background-color: #c94747;
+      color: black;
+      font-weight: bolder;
+      
     }
   }
 }

@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -13,13 +11,11 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CircularProgress } from "@mui/material";
-import { BasicModal } from "../../components/modal/modal";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logInReq } from "../../api/login";
-import { login } from "../../features/loginSlice";
-import { onError } from "../../features/errorSlice";
+import { logInReq } from "../../redux/actions/login";
+
 const theme = createTheme();
 
 export function SignIn() {
@@ -34,7 +30,7 @@ export function SignIn() {
 
   const handleRememberMe = () => {
     setRememberMe(!rememberMe);
-  }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -71,7 +67,7 @@ export function SignIn() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Kyçu
             </Typography>
             <Box
               component="form"
@@ -84,7 +80,7 @@ export function SignIn() {
                 required
                 fullWidth
                 id="usernameOrEmail"
-                label="username or email"
+                label="username ose emaili"
                 name="email"
                 autoComplete="usernameOrEmail"
                 autoFocus
@@ -95,7 +91,7 @@ export function SignIn() {
                 required
                 fullWidth
                 name="password"
-                label="Fjalekalimi"
+                label="fjalekalimi"
                 type="password"
                 id="password"
                 autoComplete="current-password"
@@ -116,14 +112,14 @@ export function SignIn() {
                 Sign In
               </Button>
               <Grid container>
-                <Grid item xs>
+                {/* <Grid item xs>
                   <Link href="#" variant="body2">
-                    Forgot password?
+                    Keni harruar passwordin?
                   </Link>
-                </Grid>
+                </Grid> */}
                 <Grid item>
                   <Link href="/signup" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                    {"Nuk keni llogari? Krijo nje te re!"}
                   </Link>
                 </Grid>
               </Grid>

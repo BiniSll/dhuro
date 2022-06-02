@@ -1,5 +1,4 @@
 import { Box, Container } from "@mui/system";
-import { useSelector, useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
 import {
   CardMedia,
@@ -9,10 +8,8 @@ import {
   Button,
   Input,
 } from "@mui/material";
-import { Image } from "@mui/icons-material";
 import AddIcon from "@mui/icons-material/Add";
-import { InputAdornment } from "@mui/material";
-import "./newStory.scss";
+import "./style/newStory.scss";
 
 const imageMimeType = /image\/(png|jpg|jpeg)/i;
 
@@ -126,6 +123,7 @@ export const NewStory = (props) => {
           autoFocus
         />
         <label className="lblImage" for="image">
+          <span>Shto fotografi</span>
           <AddIcon className="add-icon" />
           <Input
             type="file"
@@ -149,7 +147,7 @@ export const NewStory = (props) => {
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
         >
-          Create
+          Posto
         </Button>
       </Box>
     </Container>

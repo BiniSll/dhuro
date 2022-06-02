@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -10,21 +10,56 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, InputLabel } from "@mui/material";
+
+//extension
+import { ValidateEmail } from "../../extensions/Validate";
+import { Label } from "@mui/icons-material";
 
 const theme = createTheme();
 
 export function SignUp() {
   const [isLoading, setIsLoading] = useState(false);
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const [isEmailValid, setIsEmailValid] = useState("");
+  const [isPasswordValid, setIsPasswordValid] = useState("");
+  const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState("");
+
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const handleLastNameChange = (event) => {
+    setLastName(event.target.value);
+  };
+
+  const handleEmailChange = (event) => {
+    if (ValidateEmail(event.target.value)) {
+      setEmail(event.target.value);
+      setIsEmailValid(null);
+    }
+    else{
+      setIsEmailValid("Kerkohet email valid! Shembull filani@gmail.com");
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
     setIsLoading(true);
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const data = new FormData(e.currentTarget);
+
+    const user = {
+      name,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+    };
 
     setIsLoading(false);
   };
@@ -70,6 +105,7 @@ export function SignUp() {
                     fullWidth
                     id="firstName"
                     label="Emri"
+                    onAbort={handleNameChange}
                     autoFocus
                   />
                 </Grid>
@@ -84,6 +120,11 @@ export function SignUp() {
                   />
                 </Grid>
                 <Grid item xs={12}>
+                  {!!isEmailValid ? (
+                    <InputLabel for="email" sx={{ color: "red" }}>
+                      {isEmailValid}
+                    </InputLabel>
+                  ) : null}
                   <TextField
                     required
                     fullWidth
@@ -91,9 +132,15 @@ export function SignUp() {
                     label="Email"
                     name="email"
                     autoComplete="email"
+                    onChange={handleEmailChange}
                   />
                 </Grid>
                 <Grid item xs={12}>
+                  {!!isPasswordValid ? (
+                    <InputLabel for="password" sx={{ color: "red" }}>
+                      {isPasswordValid}
+                    </InputLabel>
+                  ) : null}
                   <TextField
                     required
                     fullWidth
@@ -101,7 +148,21 @@ export function SignUp() {
                     label="Fjalekalimi"
                     type="password"
                     id="password"
-                    autoComplete="new-password"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  {!!isConfirmPasswordValid ? (
+                    <InputLabel for="confirmPassword" sx={{ color: "red" }}>
+                      {isConfirmPasswordValid}
+                    </InputLabel>
+                  ) : null}
+                  <TextField
+                    required
+                    fullWidth
+                    name="confirmPassword"
+                    label="Konfirmo fjalekalimin"
+                    type="confirmPassword"
+                    id="confirmPassword"
                   />
                 </Grid>
               </Grid>
