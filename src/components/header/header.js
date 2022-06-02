@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 import { Categories } from "./Categories/Categories";
 import "./header.scss";
+import profileAvatar from "../../assets/images/isaBoletini.png";
 
 export const Header = (props) => {
   const dispatch = useDispatch();
@@ -29,8 +30,6 @@ export const Header = (props) => {
   const handleGoToProfile = () => {
     nav("/profile");
   };
-
-  
 
   const handleSignOut = () => {
     localStorage.removeItem("token");
@@ -50,7 +49,7 @@ export const Header = (props) => {
           sx={{
             width: [60, 80, 100, 120],
           }}
-          image={require("../assets/dhurologo.png")}
+          image={require("../../assets/images/dhurologo.png")}
           alt="green iguana"
         />
         <Button
@@ -84,7 +83,7 @@ export const Header = (props) => {
               startIcon={
                 <Avatar
                   alt="Harbin A"
-                  src="../../assets/images/isaBoletini.png"
+                  src={require("../../assets/images/ademjashari.jfif")}
                   sx={{ width: 56, height: 56 }}
                 />
               }

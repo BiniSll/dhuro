@@ -98,7 +98,7 @@ export const NewStory = (props) => {
           marginLeft: "43.5%",
           width: [60, 80, 100, 120],
         }}
-        image={require("../assets/dhurologo.png")}
+        image={require("../../assets/images/dhurologo.png")}
         alt="green iguana"
       />
       <Box component="form" onSubmit={onSubmitHandler}>

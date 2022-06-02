@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
-import loginReducer from '../features/loginSlice'
-import errorReducer from '../features/errorSlice'
+import loginReducer from './features/loginSlice'
+import errorReducer from './features/errorSlice'
 
 export default configureStore({
   reducer: {

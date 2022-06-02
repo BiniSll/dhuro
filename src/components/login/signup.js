@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -81,7 +81,6 @@ export function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
     const unFilledFields = [];
 
     if(name === "")
@@ -111,20 +110,22 @@ export function SignUp() {
 
     if(unFilledFields.length > 0)
     {
-      setIsLoading(false);
       dispatch(onError({statusText: "Te gjitha fushat duhët të plotesohen!", data: unFilledFields}));
+    }else{
+      setIsLoading(true);
+      const user = {
+        name,
+        lastName,
+        email,
+        password,
+        confirmPassword,
+      };
+      await signUpReq(nav, dispatch, user);
+  
+      setIsLoading(false);
     }
 
-    const user = {
-      name,
-      lastname,
-      email,
-      password,
-      confirmPassword,
-    };
-    await signUpReq(nav, dispatch, user);
-
-    setIsLoading(false);
+    
   };
 
   return (

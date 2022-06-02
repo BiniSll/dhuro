@@ -4,21 +4,26 @@ import { onError } from "../features/errorSlice";
 
 export const logInReq = async (nav, dispatch, requestData) => {
   try {
-    const responsePromise = await axiosIntance.post("/Home/login", requestData);
+    const responsePromise = await axiosIntance.post(
+      "/Authenticate/login",
+      requestData
+    );
     let response = await responsePromise.data;
     dispatch(login(response));
-    if(responsePromise.status === 200){
+    if (responsePromise.status === 200) {
       nav("/");
     }
   } catch (error) {
-    nav("/Authenticate/signin");
-    dispatch(onError(await error.response));
-    return error.response;
+    let errorResponse = await error.response
+    dispatch(onError(errorResponse));
+    nav("/signin");
+    return errorResponse;
   }
 };
 
 export const signUpReq = async (nav, dispatch, requestData) => {
   try {
+    debugger;
     const responsePromise = await axiosIntance.post(
       "/Authenticate/signup",
       requestData
@@ -26,13 +31,13 @@ export const signUpReq = async (nav, dispatch, requestData) => {
 
     let response = await responsePromise.data;
     dispatch(signUp(response));
-    if(responsePromise.status === 200){
+    if (responsePromise.status === 200) {
       nav("/");
     }
-
   } catch (error) {
+    let errorResponse = await error.response
+    dispatch(onError(errorResponse));
     nav("/signup");
-    dispatch(onError(await error.response));
-    return error.response;
+    return errorResponse;
   }
 };
