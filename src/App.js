@@ -52,7 +52,7 @@ const App = () => {
     <LinearProgress />
   ) : (
     <Container maxWidth="lg">
-      {IsLoggedIn ? <isLoggedInHandler IsLoggedIn/> : <isNotLoggedInHandler IsLoggedIn/>}
+        {IsLoggedIn ? <IsLoggedInHandler IsLoggedIn={true}/> : <IsNotLoggedInHandler IsLoggedIn ={false}/>}
     </Container>
   );
 };

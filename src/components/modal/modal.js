@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { onError } from '../../redux/features/errorSlice';
+import { onClose } from '../../redux/features/errorSlice';
 import "./modal.scss";
 
 const style = {
@@ -22,30 +22,21 @@ const style = {
 
 export const BasicModal = () => {
   const dispatch = useDispatch();
+  const isOpen = useSelector((state) => state.error.isOpen)
   const title = useSelector((state)=> state.error.title);
   const description = useSelector((state)=> state.error.description);
 
-  const [open, setOpen] = useState(true);
 
   const handleOnClose = () => {
-    setOpen(false);
-    dispatch(onError({ statusText: null, data: null }));
+    dispatch(onClose());
   };
-
-  useEffect(()=>{
-    if(title === null && description === null){
-      setOpen(false);
-    }else{
-      setOpen(true)
-    }
-  }, [title, description]);
 
   return (
     <div>
       <Modal
         className="modal"
-        open={open}
-        onClose={open}
+        open={isOpen}
+        onClose={isOpen}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >

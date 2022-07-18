@@ -7,16 +7,8 @@ export const storySlice = createSlice({
   },
   reducers: {
     AddStories: (state, action) => {
-      const oldStories = {...state.story};
-      const newStories = {...action.payload};
-      debugger;
 
-      if(oldStories !== null)
-      {
-        newStories.Items = [...oldStories.Items, ...newStories.Items];
-      }
-
-      state.story = newStories;
+      state.story = action.payload;
     },
   },
 });
