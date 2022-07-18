@@ -1,4 +1,6 @@
 import { Box, Container } from "@mui/system";
+import { useDispatch } from "react-redux";
+import { createStory } from "../../redux/actions/storyAct";
 import React, { useState, useEffect } from "react";
 import {
   CardMedia,
@@ -7,6 +9,10 @@ import {
   TextField,
   Button,
   Input,
+  MenuItem,
+  InputLabel,
+  Select,
+  FormControl
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import "./style/newStory.scss";
@@ -14,11 +20,15 @@ import "./style/newStory.scss";
 const imageMimeType = /image\/(png|jpg|jpeg)/i;
 
 export const NewStory = (props) => {
+  const dispatch = useDispatch();
+
   const [title, setTitle] = useState("");
   const [username, setUsername] = useState("");
   const [phone, setPhone] = useState("");
   const [description, setDescription] = useState("");
 
+  const [storyType, setStoryType] = useState("Dhuro");
+  const [storyTypeCategory, setStoryTypeCategory] = useState("Ndihma");
   //
   const [image, setImage] = useState(null);
   const [images, setImages] = useState([]);
@@ -29,7 +39,6 @@ export const NewStory = (props) => {
   };
   const handleUsernameInput = (e) => {
     setUsername(e.target.value);
-    
   };
   const handlePhoneInput = (e) => {
     setPhone(e.target.value);
@@ -38,11 +47,20 @@ export const NewStory = (props) => {
     setDescription(e.target.value);
   };
 
+  const handleStoryTypeCategoryChange = (e) => {
+    setStoryTypeCategory(e.target.value)
+  }
+  const handleStoryTypeChange = (e) => {
+    setStoryType(e.target.value)
+  }
+
   useEffect(() => {
     let fileReader,
       isCancel = false;
 
     if (image) {
+      setImages((images) => [...images, image]);
+      console.log({ images });
       fileReader = new FileReader();
       fileReader.onload = (e) => {
         const { result } = e.target;
@@ -69,25 +87,20 @@ export const NewStory = (props) => {
     setImage(file);
   };
 
-  const [story, setStory] = useState({
-    title: "",
-    username: "",
-    phone: "",
-    description: "",
-    image: "",
-  });
-
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    const newStory = {
-      title,
-      username,
-      phone,
-      description,
-      images,
-    };
+    console.log({ second: images });
+    const formData = new FormData();
+    formData.append("Name", title);
+    formData.append("Description", description);
+    formData.append("StoryType", storyType);
+    formData.append("StoryCategoryType", storyTypeCategory);
 
-    setStory(newStory);
+    images.map((item) => {
+      formData.append("files", item);
+    });
+
+    createStory(dispatch, formData);
   };
   return (
     <Container>
@@ -122,6 +135,34 @@ export const NewStory = (props) => {
           onChange={handleDescriptionInput}
           autoFocus
         />
+
+          <InputLabel id="demo-simple-select-label">Lloji i postimit</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={storyType}
+            label="Age"
+            onChange={handleStoryTypeChange}
+            fullWidth
+          >
+            <MenuItem value={"Dhuro"}>Dhuro</MenuItem>
+            <MenuItem value={"Ndihmo"}>Ndihmo</MenuItem>
+          </Select>
+
+          <InputLabel id="demo-simple-select-label">Kategoria postimit</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={storyTypeCategory}
+            label="Age"
+            onChange={handleStoryTypeCategoryChange}
+            fullWidth
+          >
+            <MenuItem value={"Ndihma"}>Ndihma</MenuItem>
+            <MenuItem value={"Veshmbathje"}>Veshmbathje</MenuItem>
+            <MenuItem value={"Pare"}>Pare</MenuItem>
+          </Select>
+
         <label className="lblImage" for="image">
           <span>Shto fotografi</span>
           <AddIcon className="add-icon" />

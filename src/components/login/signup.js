@@ -17,7 +17,7 @@ import { ValidateEmail } from "../../extensions/Validate";
 import { onError } from "../../redux/features/errorSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {signUpReq} from "../../redux/actions/login";
+import { signUpReq } from "../../redux/actions/loginAct";
 
 const theme = createTheme();
 
@@ -32,7 +32,6 @@ export function SignUp() {
   const [isEmailValid, setIsEmailValid] = useState("");
   const [isPasswordValid, setIsPasswordValid] = useState("");
   const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState("");
-  
 
   const dispatch = useDispatch();
   const nav = useNavigate();
@@ -49,69 +48,61 @@ export function SignUp() {
     if (ValidateEmail(event.target.value)) {
       setEmail(event.target.value);
       setIsEmailValid(null);
-    }
-    else{
+    } else {
       setIsEmailValid("Kerkohet email valid! Shembull filani@gmail.com");
     }
   };
 
   const handlePasswordChange = (event) => {
-    if(event.target.value.length >= 6)
-    {
+    if (event.target.value.length >= 6) {
       setPassword(event.target.value);
       setIsPasswordValid(null);
-    }
-    else{
+    } else {
       setIsPasswordValid("Fjalekalimi duhet te jete me shume se 6 karaktere");
     }
-    
   };
 
   const handleConfirmPasswordChange = (event) => {
-    if(event.target.value === password)
-    {
+    if (event.target.value === password) {
       setConfirmPassword(event.target.value);
       setIsConfirmPasswordValid(null);
-    }
-    else{
+    } else {
       setIsConfirmPasswordValid("Fjalekalimet nuk perputhen");
     }
-    
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const unFilledFields = [];
 
-    if(name === "")
-    {
+    if (name === "") {
       unFilledFields.push("Emri, ");
     }
-    
-    if(lastName === "")
-    {
+
+    if (lastName === "") {
       unFilledFields.push("Mbiemri, ");
     }
 
-    if(email === "")
-    {
+    if (email === "") {
       unFilledFields.push("Email, ");
     }
 
-    if(password === "")
-    {
+    if (password === "") {
       unFilledFields.push("Fjalekalimi, ");
     }
 
-    if(confirmPassword === "")
-    {
+    if (confirmPassword === "") {
       unFilledFields.push("Konfirmo fjalekalimin");
     }
 
-    if(unFilledFields.length > 0)
-    {
-      dispatch(onError({statusText: "Te gjitha fushat duhët të plotesohen!", data: unFilledFields}));
-    }else{
+    if (unFilledFields.length > 0) {
+      dispatch(
+        onError({
+          statusText: "Te gjitha fushat duhët të plotesohen!",
+          data: unFilledFields,
+        })
+      );
+    } else {
       setIsLoading(true);
       const user = {
         name,
@@ -120,12 +111,13 @@ export function SignUp() {
         password,
         confirmPassword,
       };
-      await signUpReq(nav, dispatch, user);
-  
-      setIsLoading(false);
+      signUpReq(nav, dispatch, user).then((res)=>{
+        setIsLoading(false);
+      }).catch((err)=>{
+        console.log(err);
+        setIsLoading(false);
+      });
     }
-
-    
   };
 
   return (
@@ -181,7 +173,7 @@ export function SignUp() {
                     label="Mbiemri"
                     name="lastName"
                     autoComplete="family-name"
-                    autoFocus 
+                    autoFocus
                     onChange={handleLastNameChange}
                   />
                 </Grid>
@@ -199,7 +191,7 @@ export function SignUp() {
                     name="email"
                     autoComplete="email"
                     onChange={handleEmailChange}
-                    autoFocus 
+                    autoFocus
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -216,7 +208,7 @@ export function SignUp() {
                     type="password"
                     id="password"
                     onChange={handlePasswordChange}
-                    autoFocus 
+                    autoFocus
                   />
                 </Grid>
                 <Grid item xs={12}>

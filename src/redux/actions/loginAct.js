@@ -1,29 +1,33 @@
 import axiosIntance from "../../api/index";
-import { login, signUp } from "../features/loginSlice";
+import { login, signUp, logout } from "../features/loginSlice";
 import { onError } from "../features/errorSlice";
 
 export const logInReq = async (nav, dispatch, requestData) => {
-  try {
-    const responsePromise = await axiosIntance.post(
-      "/Authenticate/login",
-      requestData
-    );
-    let response = await responsePromise.data;
-    dispatch(login(response));
-    if (responsePromise.status === 200) {
+    axiosIntance.post("/Authenticate/login", requestData).then((response)=>{
+      dispatch(login(response.data));
+    if (response.status === 200) {
       nav("/");
     }
-  } catch (error) {
-    let errorResponse = await error.response
-    dispatch(onError(errorResponse));
-    nav("/signin");
-    return errorResponse;
-  }
+    }).catch((errorResponse)=>{
+      console.log(errorResponse);
+      // dispatch(onError(errorResponse));
+      // nav("/signin");
+      // return errorResponse;
+    });
+    
 };
+
+export const authenticateReq = async (dispatch, token) => {
+  axiosIntance.get("/Authenticate", ).then((res) => { console.log({res});}).catch((error)=> {console.log(error)})
+}
+
+export const logoutReq = async (dispatch) => {
+    dispatch(logout);
+}
 
 export const signUpReq = async (nav, dispatch, requestData) => {
   try {
-    debugger;
+    
     const responsePromise = await axiosIntance.post(
       "/Authenticate/signup",
       requestData

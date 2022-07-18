@@ -7,53 +7,52 @@ import { StoryItem } from "./components/story/storyitem";
 import { Container } from "@mui/system";
 import { Header } from "./components/header/header";
 import { Route, Routes } from "react-router-dom";
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import { NewStory } from "./components/story/newStory";
 import LinearProgress from '@mui/material/LinearProgress';
-import { Button } from "@mui/material";
 import { BasicModal } from "./components/modal/modal";
 
+import {logoutReq, authenticateReq} from './redux/actions/loginAct'
+import { getStories } from "./redux/actions/storyAct";
+import axiosIntance from './api/index'
+
+import { IsNotLoggedInHandler } from "./root/IsNotLoggedInHandler";
+import { IsLoggedInHandler } from "./root/IsLoggedInHandler";
+
 const App = () => {
+  const dispatch = useDispatch()
   const IsLoggedIn = useSelector((state)=> state.login.isLoggedIn);
-  const [IsLoading, setIsLoading] = useState(false);
-  
-  
-  const isLoggedInHandler = () => {
-    return (
-      <div>
-        <BasicModal/>
-        <Header IsLoggedIn={IsLoggedIn} />
+  const [IsLoading, setIsLoading] = useState(true);
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/storyitem" element={<StoryItem />} />
-          <Route path="/story/create" element={<NewStory />} />
-          <Route path="*" element={<Home />} />
-        </Routes>
-      </div>
-    );
-  };
+  axiosIntance.interceptors.response.use(
+		(response) => response,
+		(error) => {
+			if (error.response.status === 401) {
+				//handled promise
+				console.log({ error });
+				logoutReq(dispatch);
+			} else {
+				return Promise.reject(error);
+			}
+		}
+	);
 
-  const isNotLoggedInHandler = () => {
-    return (
-      <div>
-        <BasicModal/>
-        <Header IsLoggedIn={IsLoggedIn} />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/storyitem" element={<StoryItem />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="*" element={<Home />} />
-        </Routes>
-      </div>
-    );
-  };
+  useEffect(()=> {
+    if(IsLoggedIn == true){
+      authenticateReq(dispatch)
+      setIsLoading(false)
+    }
+    else{
+      setIsLoading(false)
+    }
+    
+  }, [IsLoggedIn])
+
   return IsLoading ? (
     <LinearProgress />
   ) : (
     <Container maxWidth="lg">
-      {IsLoggedIn ? isLoggedInHandler() : isNotLoggedInHandler()}
+      {IsLoggedIn ? <isLoggedInHandler IsLoggedIn/> : <isNotLoggedInHandler IsLoggedIn/>}
     </Container>
   );
 };

@@ -14,7 +14,7 @@ import { CircularProgress } from "@mui/material";
 
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logInReq } from "../../redux/actions/login";
+import { logInReq } from "../../redux/actions/loginAct";
 
 const theme = createTheme();
 

@@ -8,13 +8,8 @@ export const loginSlice = createSlice({
     token: null,
   },
   reducers: {
-    isLoggedIn: (state) => {
-      let token = localStorage.getItem("token");
-      if (!!token) {
-        state.isLoggedIn = true;
-      }
-    },
     login(state, action) {
+      
       state.user = action.payload.resUser;
       state.token = action.payload.access_token;
       state.isLoggedIn = true;

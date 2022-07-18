@@ -1,64 +1,37 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { StoryItem } from "../story/storyitem";
 import CircularProgress from "@mui/material/CircularProgress";
+import { getStories } from "../../redux/actions/storyAct";
 
 export const Home = () => {
-  const [stories, setStories] = useState([]);
+  const stories = useSelector((state) => state.story.story);
   const [IsLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setIsLoading(true);
-    setStories(persistStory);
-    setIsLoading(false)
+    getStories(dispatch, 1);
+    window.addEventListener("scroll", handleScroll);
+    if (!!stories && stories.length > 0) {
+      setIsLoading(false);
+    }
   }, []);
+
+  const handleScroll = () => {
+    let userScrollHeight = window.innerHeight + window.scrollY;
+    let windowBottomHeight = document.documentElement.offsetHeight;
+    if (userScrollHeight >= windowBottomHeight) {
+      setIsLoading(true);
+      getStories(dispatch, stories.next);
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div>
-      {IsLoading ? (
-        <CircularProgress
-          size={40}
-          left={-20}
-          style={{ marginLeft: "50%" }}
-          sx={{ marginTop: "10px" }}
-        />
-      ) : (
-        stories.map((story) => <StoryItem story={story} />)
-      )}
+      {!!stories && stories.items.length
+        ? stories.items.map((story) => <StoryItem story={story} />)
+        : null}
     </div>
   );
 };
-
-const persistStory = [
-  {
-    title: "Iguana",
-    username: "Iguana",
-    phone: "+38349827909",
-    description: "Iguana is a green iguanasdasdasa aisudhasiuhdi auhsd iuahsiasfago'dskgosdk[gdsok[gspdkspokpodskpsdokgpsodkgpdsokgspokdgpodsgpoksdgpoksdgokd uhasiudhasiudh aiudha iuhdasi uhdisauhdiaasda slkjd LASIjdoais jdoasa dpoksa doaks dpoaks pokaspdok apsokd paoskpdok aspokd psakpasokdpaoskdpaoskdpoksa dksapokisjd oiasd lajsid jaosid joaisj dosaij doisajoi jasoidj sajaso idjasoi jdoaisj doiajsodij asoij dajois doiajs oidjasu hdiusah ",
-    image:
-      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-  },
-  {
-    title: "Lizard",
-    username: "Lizard",
-    phone: "+38349827909",
-    description: "Lizard is a green lizard",
-    image:
-      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-  },
-  {
-    title: "Lizard",
-    username: "Lizard",
-    phone: "+38349827909",
-    description: "Lizard is a green lizard",
-    image:
-      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-  },
-  {
-    title: "Mace",
-    username: "Luan",
-    phone: "+38349827909",
-    description: "Lizard is a green lizard",
-    image:
-      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-  },
-];

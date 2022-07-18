@@ -27,7 +27,7 @@ export const StoryItem = (props) => {
             // borderBottomRightRadius: 10,
             // borderBottomLeftRadius: 10,
           }}
-          image={props.story.image}
+          image={`data:image/jpeg;base64,${props.story.bytes}`}
           alt="green iguana"
         />
         <CardContent>
