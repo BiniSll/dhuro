@@ -1,24 +1,142 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import AccessibilityNewRoundedIcon from '@mui/icons-material/AccessibilityNewRounded';
-import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import React, { useState } from "react";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Button from "@mui/material/Button";
+import AccessibilityNewRoundedIcon from "@mui/icons-material/AccessibilityNewRounded";
+import CardMedia from "@mui/material/CardMedia";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/features/loginSlice";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Avatar from "@mui/material/Avatar";
+import { useNavigate } from "react-router-dom";
 
-export const Header = ()=> {
+import { Categories } from "./Categories/Categories";
+import "./header.scss";
+import profileAvatar from "../../assets/images/isaBoletini.png";
+
+export const Header = (props) => {
+  const dispatch = useDispatch();
+  const nav = useNavigate();
+
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleGoToProfile = () => {
+    nav("/profile");
+  };
+
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    dispatch(logout());
+    nav("/");
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="relative" color='transparent'>
-        <Toolbar>
-          <Button href="/" variant="contained" color="inherit" sx={{ flexGrow: 4 }} startIcon={<AccessibilityNewRoundedIcon  />}>Dhuro</Button>
-          <Button href="/story/create" variant="contained" color="inherit" sx={{ flexGrow: 1 }} startIcon={<AddRoundedIcon  />}>Shto</Button>
-          <Button color="inherit">Login</Button>
+    <AppBar position="relative" color="transparent" sx={{ borderRadius: 10 }}>
+      <Toolbar className="navbarheader">
+        <CardMedia
+          component="img"
+          sx={{
+            width: [60, 80, 100, 120],
+          }}
+          image={require("../../assets/images/dhurologo.png")}
+          alt="green iguana"
+        />
+        <Button
+          href="/"
+          variant="contained"
+          color="inherit"
+          className="dhuroButton"
+          sx={{ flexGrow: 4, borderRadius: 10, marginX: 1 }}
+          startIcon={<AccessibilityNewRoundedIcon />}
+        >
+          Dhuro
+        </Button>
+        {props.IsLoggedIn ? (
+          <div>
+            <Button
+              href="/story/create"
+              variant="contained"
+              color="inherit"
+              className="shtoButton"
+              sx={{ flexGrow: 1, borderRadius: 10, marginX: 1 }}
+              startIcon={<AddRoundedIcon />}
+            >
+              Shto
+            </Button>
+            <Button
+              id="basic-button"
+              aria-controls={open ? "basic-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={handleClick}
+              startIcon={
+                <Avatar
+                  alt="Harbin A"
+                  src={require("../../assets/images/ademjashari.jfif")}
+                  sx={{ width: 56, height: 56 }}
+                />
+              }
+            ></Button>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}
+            >
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  handleGoToProfile();
+                }}
+              >
+                Profile
+              </MenuItem>
+
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  handleSignOut();
+                }}
+              >
+                Logout
+              </MenuItem>
+            </Menu>
+          </div>
+        ) : (
+          <Button
+            href="/signin"
+            style={{ backgroundColor: "#213123", color: "white" }}
+            color="inherit"
+            variant="contained"
+            sx={{
+              flexGrow: 1,
+              borderRadius: 10,
+              marginX: 1,
+            }}
+          >
+            Kyçu
+          </Button>
+        )}
+      </Toolbar>
+      {props.IsLoggedIn ? (
+        <Toolbar className="navbarheader">
+          <Categories />
         </Toolbar>
-      </AppBar>
-    </Box>
+      ) : null}
+    </AppBar>
   );
-}
+};

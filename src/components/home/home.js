@@ -1,57 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { StoryItem } from "../story/storyitem";
-import { Container } from "@mui/system";
-import { NewStory } from "../story/newStory";
+import CircularProgress from "@mui/material/CircularProgress";
+import { getStories } from "../../redux/actions/storyAct";
 
 export const Home = () => {
-  const [stories, setStories] = useState(persistStory);
+  const stories = useSelector((state) => state.story.story);
+  const [IsLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
 
-  const addNewStory = (story) => {
-    //NOTE this method is almost nsecary, but isn't the only way to add new story to the list
-    setStories(() => {
-      return [story, ...stories];
-    });
+  useEffect(() => {
+    getStories(dispatch, 1);
+    window.addEventListener("scroll", handleScroll);
+    if (!!stories && stories.length > 0) {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const handleScroll = () => {
+    let userScrollHeight = window.innerHeight + window.scrollY;
+    let windowBottomHeight = document.documentElement.offsetHeight;
+    if (userScrollHeight >= windowBottomHeight) {
+      setIsLoading(true);
+      getStories(dispatch, stories.next);
+      setIsLoading(false);
+    }
   };
 
   return (
     <div>
-      <NewStory/>
-      {stories.map((story) => (
-        <StoryItem
-          title={story.title}
-          username={story.username}
-          phone={story.phone}
-          description={story.description}
-          image={story.image}
-        />
-      ))}
+      {!!stories && stories.items.length
+        ? stories.items.map((story) => <StoryItem story={story} />)
+        : null}
     </div>
   );
 };
-
-const persistStory = [
-  {
-    title: "Iguana",
-    username: "Iguana",
-    phone: "+38349827909",
-    description: "Iguana is a green iguana",
-    image:
-      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-  },
-  {
-    title: "Lizard",
-    username: "Lizard",
-    phone: "+38349827909",
-    description: "Lizard is a green lizard",
-    image:
-      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-  },
-  {
-    title: "Lizard",
-    username: "Lizard",
-    phone: "+38349827909",
-    description: "Lizard is a green lizard",
-    image:
-      "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-  },
-];

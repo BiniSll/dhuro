@@ -1,8 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
-import counterReducer from '../features/counterSlice'
+
+//reducers
+import loginReducer from './features/loginSlice'
+import errorReducer from './features/errorSlice'
+import storyReducer from './features/storySlice'
 
 export default configureStore({
   reducer: {
-    counter: counterReducer,
+    login: loginReducer,
+    error: errorReducer,
+    story: storyReducer
   },
 })

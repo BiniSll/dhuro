@@ -1,40 +1,80 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import * as React from "react";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import { Button, CardActionArea, CardActions } from "@mui/material";
 
 export const StoryItem = (props) => {
   return (
-    <Card sx={{minHeight: 350, marginTop: 7 }}>
+    <Card
+      sx={{
+        minHeight: 350,
+        marginY: 5,
+        marginX: [0, 4, 7, 15],
+        border: 7,
+        borderColor: "rgba(0, 0, 0, 0.2)",
+        borderRadius: 10,
+        overflow: "hidden",
+      }}
+    >
       <CardActionArea>
         <CardMedia
           component="img"
-          height="140"
-          image={props.image}
+          sx={{
+            height: [200, 300, 400, 500],
+            borderColor: "rgba(0, 0, 0, 0.2)",
+            // borderBottomRightRadius: 10,
+            // borderBottomLeftRadius: 10,
+          }}
+          image={`data:image/jpeg;base64,${props.story.bytes}`}
           alt="green iguana"
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {props.title}
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+            textAlign={"center"}
+          >
+            {props.story.title}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {props.description}
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            textAlign={"center"}
+          >
+            {props.story.description}
             <hr />
-            Shperndaresi: <span>{props.username}</span>
-            
+            Shperndaresi: {props.story.username}
           </Typography>
-          <Typography variant="caption">
-            Telefoni: <span>{props.phone}</span>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            textAlign={"center"}
+          >
+            Telefoni: {props.story.phone}
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary">
+      <CardActions textAlign="center">
+        <Button
+          style={{
+            backgroundColor: "#213123",
+            color: "white",
+            marginBottom: 10,
+          }}
+          color="inherit"
+          variant="contained"
+          sx={{
+            flexGrow: 1,
+            borderRadius: 10,
+            marginX: 1,
+          }}
+        >
           Shiko me shume
         </Button>
       </CardActions>
     </Card>
   );
-}
+};

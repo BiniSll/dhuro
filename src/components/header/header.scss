@@ -1,0 +1,18 @@
+@media (max-width: 430px) {
+  .dhuroButton,
+  .shtoButton {
+    text-align: center;
+    font-size: 0px !important;
+  }
+}
+
+.categories {
+  &:hover {
+    border-radius: 0px 0px 36px 36px;
+    background-color: #f5f5f5;
+  }
+}
+
+.navbarheader{
+  transition: all 1s ease-in-out;
+}
